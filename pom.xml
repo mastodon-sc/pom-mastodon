@@ -16,7 +16,7 @@
 
 	<packaging>pom</packaging>
 
-	<name>Mastodon App</name>
+	<name>Mastodon Parent POM</name>
 	<description>Mastodon – a large-scale tracking and track-editing framework for large, multi-view images.</description>
 	<url>https://github.com/mastodon-sc/mastodon</url>
 	<inceptionYear>2014</inceptionYear>
@@ -31,12 +31,25 @@
 		</license>
 	</licenses>
 
+
+	<modules>
+		<module>../mastodon-collection</module>
+		<module>../mastodon-graph</module>
+		<module>../mastodon</module>
+		<module>../mastodon-ellipsoid-fitting</module>
+		<module>../mastodon-tracking</module>
+		<module>../mastodon-selection-creator</module>
+		<module>../mastodon-pasteur</module>
+		<module>../mastodon-tomancak</module>
+		<module>../mastodon-app</module>
+	</modules>
+	
 	<properties>
 		<mastodon.group>org.mastodon</mastodon.group>
 		<mastodon-collection.version>1.0.0-beta-19-SNAPSHOT</mastodon-collection.version>
-		<mastodon-graph.version>1.0.0-beta-16</mastodon-graph.version>
+		<mastodon-graph.version>1.0.0-beta-18-SNAPSHOT</mastodon-graph.version>
 		<mastodon.version>1.0.0-beta-17-SNAPSHOT</mastodon.version>
-		<mastodon-ellipsoid-fitting.version>0.2.3-SNAPSHOT</mastodon-ellipsoid-fitting.version>
+		<mastodon-ellipsoid-fitting.version>0.2.5-SNAPSHOT</mastodon-ellipsoid-fitting.version>
 		<mastodon-tracking.version>1.0.0-beta-7-SNAPSHOT</mastodon-tracking.version>
 		<mastodon-selection-creator.version>0.0.2-SNAPSHOT</mastodon-selection-creator.version>
 		<mastodon-pasteur.version>1.0.0-beta-2-SNAPSHOT</mastodon-pasteur.version>
@@ -52,7 +65,7 @@
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
 
 	</properties>
-
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -64,13 +77,11 @@
 				<groupId>${mastodon.group}</groupId>
 				<artifactId>mastodon-graph</artifactId>
 				<version>${mastodon-graph.version}</version>
-				<type>war</type>
 			</dependency>
 			<dependency>
 				<groupId>${mastodon.group}</groupId>
 				<artifactId>mastodon</artifactId>
 				<version>${mastodon.version}</version>
-				<type>ejb</type>
 			</dependency>
 			<dependency>
 				<groupId>${mastodon.group}</groupId>
@@ -81,11 +92,6 @@
 				<groupId>${mastodon.group}</groupId>
 				<artifactId>mastodon-tracking</artifactId>
 				<version>${mastodon-tracking.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>${mastodon.group}</groupId>
-				<artifactId>mastodon-selection-creator</artifactId>
-				<version>${mastodon-selection-creator.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${mastodon.group}</groupId>

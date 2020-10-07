@@ -3,6 +3,7 @@
 import os
 import re
 import subprocess
+import datetime
 
 ROOT_PATH = '..'
 PATH_TO_POM_FILE = os.path.join( ROOT_PATH, 'pom.xml' )
@@ -21,7 +22,7 @@ def get_modules():
 			modules.append( match.group(1) )
 	return modules
 
-def check_if_clean( module ):
+def check_if_clean( module, skip_up_to_date = False ):
 	print( '\033[1mChecking module %s \033[0m' % module )
 	path = os.path.join( ROOT_PATH, module )
 	out = run_command( "git status -uno", path )
@@ -32,7 +33,7 @@ def check_if_clean( module ):
 
 	# Check if we are up to date.
 	up_to_date = re.search( u"Your branch is up to date with", out, re.MULTILINE )
-	if not up_to_date:
+	if not skip_up_to_date and not up_to_date:
 		print( 'Repo not up to date with remote. Aborting. ' )
 		return False
 
@@ -50,8 +51,17 @@ def git_pull( module ):
         path = os.path.join( ROOT_PATH, module )
         out = run_command( "git pull", path )
 
+def get_branch_name( module ):
+    path = os.path.join( ROOT_PATH, module )
+    out = run_command( "git status -uno", path )
+    branch_match = re.search( u"^On branch (.+)$", out, re.MULTILINE )
+    return branch_match.group( 1 )
+
+
 def install():
-    cmd = "mvn clean install"
+    branch_name = get_branch_name( '../mastodon' )
+    t = datetime.date.today()
+    cmd = "mvn clean install -Dscijava.app.directory=./Mastodon-%s-%s" % ( branch_name, t )
     subprocess.call( cmd, cwd = ROOT_PATH, shell = True )
 
 #-----------------------
@@ -66,7 +76,7 @@ def main():
     print( '\n----------------' )
     print( 'Checking modules' )
     for module in modules:
-        if not check_if_clean( module ):
+        if not check_if_clean( module, module == '../mastodon-app' ):
             return
 
     # Pull each module.
